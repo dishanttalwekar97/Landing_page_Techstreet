@@ -22,7 +22,18 @@ export function Navbar({ activeSection }) {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [mobileMenuOpen]);
 
-  // Clean, focused core navigation items (no clutter)
+  const handleNavClick = (e, href) => {
+    if (href && href.startsWith('#')) {
+      e.preventDefault();
+      const targetElement = document.querySelector(href);
+      if (targetElement) {
+        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+    setMobileMenuOpen(false);
+  };
+
+  // Clean, focused core navigation items
   const navLinks = [
     { label: 'About', href: '#about', id: 'about' },
     { label: 'Playbook', href: '#playbook', id: 'playbook' },
@@ -37,8 +48,13 @@ export function Navbar({ activeSection }) {
       <header className={`navbar-header ${isScrolled ? 'navbar--scrolled' : ''}`}>
         <div className="content-container">
           <div className="nav-container">
-            {/* 1. Left: Brand Logo (Single clean line) */}
-            <a href="#hero" className="nav-brand" aria-label="Trading Techstreet Homepage">
+            {/* 1. Left: Brand Logo */}
+            <a
+              href="#hero"
+              className="nav-brand"
+              aria-label="Trading Techstreet Homepage"
+              onClick={(e) => handleNavClick(e, '#hero')}
+            >
               <div className="brand-icon-box">
                 <TrendingUp size={19} strokeWidth={2.4} />
               </div>
@@ -56,6 +72,7 @@ export function Navbar({ activeSection }) {
                     <a
                       href={link.href}
                       className={`nav-link ${isActive ? 'active' : ''}`}
+                      onClick={(e) => handleNavClick(e, link.href)}
                     >
                       {link.label}
                     </a>
@@ -72,6 +89,7 @@ export function Navbar({ activeSection }) {
                 variant="primary"
                 magnetic={true}
                 className="btn-nav-cta"
+                onClick={(e) => handleNavClick(e, '#courses')}
               >
                 <span>Explore Courses</span>
                 <ArrowRight size={15} />
@@ -124,7 +142,7 @@ export function Navbar({ activeSection }) {
             <a
               key={link.id}
               href={link.href}
-              onClick={() => setMobileMenuOpen(false)}
+              onClick={(e) => handleNavClick(e, link.href)}
               style={{
                 padding: '12px 16px',
                 borderRadius: '10px',
@@ -150,7 +168,7 @@ export function Navbar({ activeSection }) {
             href="#courses"
             variant="primary"
             style={{ width: '100%' }}
-            onClick={() => setMobileMenuOpen(false)}
+            onClick={(e) => handleNavClick(e, '#courses')}
           >
             <span>Explore Courses</span>
             <ArrowRight size={16} />

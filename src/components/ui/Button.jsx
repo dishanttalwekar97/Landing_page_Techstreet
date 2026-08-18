@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 
 /**
  * Button Component with optional subtle magnetic hover physics
+ * Handles both standard buttons and anchor navigation links with smooth scrolling.
  */
 export function Button({
   children,
@@ -14,6 +15,7 @@ export function Button({
   target,
   rel,
   ariaLabel,
+  style = {},
   ...props
 }) {
   const btnRef = useRef(null);
@@ -24,13 +26,27 @@ export function Button({
     const rect = btnRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left - rect.width / 2;
     const y = e.clientY - rect.top - rect.height / 2;
-    // Dampen magnetic offset
     setPosition({ x: x * 0.22, y: y * 0.22 });
   };
 
   const handleMouseLeave = () => {
     if (!magnetic) return;
     setPosition({ x: 0, y: 0 });
+  };
+
+  const handleClick = (e) => {
+    // If it's an internal hash link like #courses, perform guaranteed smooth scroll
+    if (href && href.startsWith('#')) {
+      const targetElement = document.querySelector(href);
+      if (targetElement) {
+        e.preventDefault();
+        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    if (onClick) {
+      onClick(e);
+    }
   };
 
   const magneticStyle = magnetic
@@ -43,6 +59,7 @@ export function Button({
   const sizeClass = size === 'sm' ? 'btn-sm' : size === 'lg' ? 'btn-lg' : '';
   const variantClass = variant === 'secondary' ? 'btn-secondary' : 'btn-primary';
   const combinedClasses = `btn ${variantClass} ${sizeClass} ${className}`.trim();
+  const mergedStyle = { ...magneticStyle, ...style };
 
   if (href) {
     return (
@@ -50,9 +67,10 @@ export function Button({
         ref={btnRef}
         href={href}
         className={combinedClasses}
-        style={magneticStyle}
+        style={mergedStyle}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
+        onClick={handleClick}
         target={target}
         rel={target === '_blank' ? 'noopener noreferrer' : rel}
         aria-label={ariaLabel}
@@ -67,9 +85,9 @@ export function Button({
     <button
       ref={btnRef}
       type="button"
-      onClick={onClick}
+      onClick={handleClick}
       className={combinedClasses}
-      style={magneticStyle}
+      style={mergedStyle}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       aria-label={ariaLabel}
