@@ -4,7 +4,7 @@ import { X } from 'lucide-react';
 
 /**
  * Modal Dialog for interactive previews (Course syllabus, Video details, Lead Playbook)
- * Uses React Portal to mount directly into document.body, ensuring zero stacking/transform conflicts.
+ * Fixed viewport overlay with sticky header, internal scrollable body, and foolproof close handlers.
  */
 export function Modal({ isOpen, onClose, title, children }) {
   useEffect(() => {
@@ -38,21 +38,20 @@ export function Modal({ isOpen, onClose, title, children }) {
         className="modal-dialog"
         onClick={(e) => e.stopPropagation()}
       >
-        <button
-          type="button"
-          className="modal-close-btn"
-          onClick={onClose}
-          aria-label="Close modal dialog"
-        >
-          <X size={18} />
-        </button>
+        {/* Sticky Header with Title and Prominent Close Button */}
+        <div className="modal-header-box">
+          <h3 className="modal-header-title">{title || 'Details'}</h3>
+          <button
+            type="button"
+            className="modal-close-btn"
+            onClick={onClose}
+            aria-label="Close dialog"
+          >
+            <X size={18} />
+          </button>
+        </div>
 
-        {title && (
-          <div className="modal-header-box">
-            <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#FFF' }}>{title}</h3>
-          </div>
-        )}
-
+        {/* Scrollable Content Body */}
         <div className="modal-body-scroll">
           {children}
         </div>

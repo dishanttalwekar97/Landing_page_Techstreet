@@ -2833,54 +2833,75 @@ img, svg {
    -------------------------------------------------------------------------- */
 .modal-overlay {
   position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.78);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: rgba(5, 7, 10, 0.82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
-  z-index: 999999;
-  animation: modalFadeIn 220ms ease;
+  padding: 24px 16px;
+  z-index: 9999999;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   pointer-events: auto;
+  animation: modalFadeIn 200ms ease;
 }
 
 .modal-dialog {
   width: 100%;
-  max-width: 640px;
-  max-height: 90vh;
-  background: #10141B;
+  max-width: 620px;
+  margin: auto;
+  max-height: calc(100vh - 48px);
+  max-height: calc(100dvh - 48px);
+  background: #11141B;
   border: 1px solid rgba(245, 158, 11, 0.35);
-  border-radius: var(--radius-xl);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.95), 0 0 35px rgba(245, 158, 11, 0.2);
-  overflow: hidden;
-  position: relative;
+  border-radius: 20px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.95), 0 0 35px rgba(245, 158, 11, 0.2);
   display: flex;
   flex-direction: column;
-  animation: modalSlideUp 280ms var(--ease-spring);
-  z-index: 1000000;
+  position: relative;
+  overflow: hidden;
+  z-index: 10000000;
+  animation: modalSlideUp 250ms var(--ease-spring);
 }
 
 .modal-header-box {
-  padding: 22px 28px 16px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 24px;
+  background: rgba(18, 22, 29, 0.95);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   flex-shrink: 0;
 }
 
+.modal-header-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  padding-right: 12px;
+}
+
 .modal-body-scroll {
-  padding: 24px 28px;
+  padding: 24px;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   flex-grow: 1;
-  max-height: calc(90vh - 80px);
+  max-height: calc(100vh - 120px);
+  max-height: calc(100dvh - 120px);
 }
 
 .modal-close-btn {
-  position: absolute;
-  top: 18px;
-  right: 18px;
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.12);
@@ -2889,8 +2910,8 @@ img, svg {
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  flex-shrink: 0;
   transition: all var(--transition-fast);
-  z-index: 10;
 }
 
 .modal-close-btn:hover {
@@ -2906,7 +2927,7 @@ img, svg {
 }
 
 @keyframes modalSlideUp {
-  from { opacity: 0; transform: translateY(20px) scale(0.96); }
+  from { opacity: 0; transform: translateY(16px) scale(0.97); }
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
