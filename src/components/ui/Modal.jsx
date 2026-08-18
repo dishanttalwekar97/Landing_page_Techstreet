@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
 
 /**
- * Modal Dialog for interactive previews (Course syllabus, Video details)
+ * Modal Dialog for interactive previews (Course syllabus, Video details, Lead Playbook)
+ * Uses React Portal to mount directly into document.body, ensuring zero stacking/transform conflicts.
  */
 export function Modal({ isOpen, onClose, title, children }) {
   useEffect(() => {
@@ -25,10 +27,19 @@ export function Modal({ isOpen, onClose, title, children }) {
 
   if (!isOpen) return null;
 
-  return (
-    <div className="modal-overlay" onClick={onClose} role="dialog" aria-modal="true">
-      <div className="modal-dialog" onClick={(e) => e.stopPropagation()}>
+  const modalElement = (
+    <div
+      className="modal-overlay"
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+    >
+      <div
+        className="modal-dialog"
+        onClick={(e) => e.stopPropagation()}
+      >
         <button
+          type="button"
           className="modal-close-btn"
           onClick={onClose}
           aria-label="Close modal dialog"
@@ -37,15 +48,17 @@ export function Modal({ isOpen, onClose, title, children }) {
         </button>
 
         {title && (
-          <div style={{ padding: '24px 28px 16px 28px', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
-            <h3 style={{ fontSize: '1.3rem', fontWeight: 700, color: '#FFF' }}>{title}</h3>
+          <div className="modal-header-box">
+            <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#FFF' }}>{title}</h3>
           </div>
         )}
 
-        <div style={{ padding: '24px 28px' }}>
+        <div className="modal-body-scroll">
           {children}
         </div>
       </div>
     </div>
   );
+
+  return createPortal(modalElement, document.body);
 }

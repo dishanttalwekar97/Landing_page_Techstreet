@@ -2829,6 +2829,88 @@ img, svg {
 }
 
 /* --------------------------------------------------------------------------
+   Global Modal System (High Z-Index, Viewport Overlay & Smooth Animations)
+   -------------------------------------------------------------------------- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.78);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 999999;
+  animation: modalFadeIn 220ms ease;
+  pointer-events: auto;
+}
+
+.modal-dialog {
+  width: 100%;
+  max-width: 640px;
+  max-height: 90vh;
+  background: #10141B;
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.95), 0 0 35px rgba(245, 158, 11, 0.2);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  animation: modalSlideUp 280ms var(--ease-spring);
+  z-index: 1000000;
+}
+
+.modal-header-box {
+  padding: 22px 28px 16px 28px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+}
+
+.modal-body-scroll {
+  padding: 24px 28px;
+  overflow-y: auto;
+  flex-grow: 1;
+  max-height: calc(90vh - 80px);
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  z-index: 10;
+}
+
+.modal-close-btn:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.5);
+  color: #EF4444;
+  transform: scale(1.08);
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modalSlideUp {
+  from { opacity: 0; transform: translateY(20px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* --------------------------------------------------------------------------
    21. Comprehensive Mobile Responsiveness (375px to 768px & Ultra-Small)
    -------------------------------------------------------------------------- */
 @media (max-width: 768px) {
